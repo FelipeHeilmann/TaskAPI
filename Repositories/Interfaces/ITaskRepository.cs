@@ -1,0 +1,17 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using TaskApi.Models;
+
+namespace TaskApi.Repositories.Interfaces
+{
+    public interface ITaskRepository
+    {
+        Task<List<TaskModel>> GetTasks();
+        Task<TaskModel> GetTaskById(int id);
+        Task<TaskModel> CreateTask(TaskModel task);
+        Task<TaskModel> UpdateTask(TaskModel task, int taskId);
+        Task<bool> DeleteTask(int taskId);
+    }
+}
