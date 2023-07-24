@@ -16,7 +16,7 @@ namespace TaskApi.Repositories
         {
             return await _dbContext.Users.ToListAsync();
         }
-        public async Task<UserModel> GetUserById(string userId)
+        public async Task<UserModel> GetUserById(Guid userId)
         {
             return await _dbContext.Users.FirstOrDefaultAsync(user => user.Id == userId);
         }
@@ -26,7 +26,7 @@ namespace TaskApi.Repositories
             await _dbContext.SaveChangesAsync();
             return user;
         }
-        public async Task<UserModel> UpdateUser(UserModel user, string userId)
+        public async Task<UserModel> UpdateUser(UserModel user, Guid userId)
         {
             UserModel userAlreadyExists = await GetUserById(userId) ?? throw new Exception("User not found");
 
@@ -39,7 +39,7 @@ namespace TaskApi.Repositories
             return userAlreadyExists;
         }
 
-        public async Task<bool> DeleteUser(string userId)
+        public async Task<bool> DeleteUser(Guid userId)
         {
             UserModel userAlreadyExists = await GetUserById(userId) ?? throw new Exception("User not found");
 

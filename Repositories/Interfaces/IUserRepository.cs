@@ -9,9 +9,9 @@ namespace TaskApi.Repositories.Interfaces
     public interface IUserRepository
     {
         Task<List<UserModel>> GetUsers();
-        Task<UserModel> GetUserById(string userId);
+        Task<UserModel> GetUserById(Guid userId);
         Task<UserModel> CreateUser(UserModel user);
-        Task<UserModel> UpdateUser(UserModel user, string userId);
-        Task<bool> DeleteUser(string userId);
+        Task<UserModel> UpdateUser(UserModel user, Guid userId);
+        Task<bool> DeleteUser(Guid userId);
     }
 }

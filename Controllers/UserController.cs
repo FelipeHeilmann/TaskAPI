@@ -23,7 +23,7 @@ namespace TaskApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserModel>> GetUser(string id)
+        public async Task<ActionResult<UserModel>> GetUser(Guid id)
         {
             UserModel user = await _userRepository.GetUserById(id);
 
@@ -33,14 +33,13 @@ namespace TaskApi.Controllers
         [HttpPost]
         public async Task<ActionResult<UserModel>> CreateUser([FromBody] UserModel user)
         {
-            user.Id = Guid.NewGuid().ToString();
             UserModel newUser = await _userRepository.CreateUser(user);
 
             return Ok(newUser);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<UserModel>> UpdateUser([FromBody] UserModel user, string id)
+        public async Task<ActionResult<UserModel>> UpdateUser([FromBody] UserModel user, Guid id)
         {
             user.Id = id;
 
@@ -49,7 +48,7 @@ namespace TaskApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<UserModel>> DeleteUser(string id)
+        public async Task<ActionResult<UserModel>> DeleteUser(Guid id)
         {
             Boolean deleted = await _userRepository.DeleteUser(id);
             return Ok(deleted);

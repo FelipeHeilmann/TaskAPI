@@ -8,10 +8,9 @@ namespace TaskApi.Data.Map
         public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<UserModel> builder)
         {
             builder.HasKey(user => user.Id);
-            builder.Property(user => user.Id).ValueGeneratedOnAdd();
-            builder.Property(user => user.Id).HasDefaultValueSql("uuid_generate_v4()");
-            builder.Property(user => user.Name).IsRequired();
-            builder.Property(user => user.Email).IsRequired();
+            builder.Property(user => user.Id).ValueGeneratedOnAdd().HasColumnName("id");
+            builder.Property(user => user.Name).IsRequired().HasColumnName("name");
+            builder.Property(user => user.Email).IsRequired().HasColumnName("email");
             builder.ToTable("users");
         }
 
