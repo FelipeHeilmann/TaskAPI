@@ -15,5 +15,8 @@ namespace TaskApi.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public StatusTask Status { get; set; }
 
+        public string? UserId { get; set; }
+        public virtual UserModel? User { get; set; }
+
     }
 }
