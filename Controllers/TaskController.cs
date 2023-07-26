@@ -9,7 +9,7 @@ using TaskApi.Repositories.Interfaces;
 namespace TaskApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api")]
     public class TaskController : ControllerBase
     {
         private readonly ITaskRepository _taskRepository;
@@ -18,28 +18,28 @@ namespace TaskApi.Controllers
             _taskRepository = taskRepository;
         }
 
-        [HttpGet]
+        [HttpGet("tasks")]
         public async Task<ActionResult<List<TaskModel>>> GetTasks()
         {
             List<TaskModel> tasks = await _taskRepository.GetTasks();
             return Ok(tasks);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("task/{id}")]
         public async Task<ActionResult<TaskModel>> GetTask(int id)
         {
             TaskModel task = await _taskRepository.GetTaskById(id);
             return Ok(task);
         }
 
-        [HttpPost]
+        [HttpPost("newTask")]
         public async Task<ActionResult<TaskModel>> CreateTask([FromBody] TaskModel task)
         {
             TaskModel newTask = await _taskRepository.CreateTask(task);
             return Ok(newTask);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("task/{id}")]
         public async Task<ActionResult<TaskModel>> UpdateTask([FromBody] TaskModel task, int id)
         {
             task.Id = id;
@@ -47,7 +47,7 @@ namespace TaskApi.Controllers
             return Ok(changedTask);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("task/{id}")]
         public async Task<ActionResult<Boolean>> DeleteTask(int id)
         {
             Boolean deletedTask = await _taskRepository.DeleteTask(id);

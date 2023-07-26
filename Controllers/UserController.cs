@@ -4,7 +4,7 @@ using TaskApi.Repositories.Interfaces;
 
 namespace TaskApi.Controllers
 {
-    [Route("api/[controller]")] //route to access the controller 
+    [Route("api")] //route to access the controller 
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -15,14 +15,14 @@ namespace TaskApi.Controllers
             _userRepository = userRepository;
         }
 
-        [HttpGet]
+        [HttpGet("users")]
         public async Task<ActionResult<List<UserModel>>> GetUsers()
         {
             List<UserModel> users = await _userRepository.GetUsers();
             return Ok(users);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("user/{id}")]
         public async Task<ActionResult<UserModel>> GetUser(Guid id)
         {
             UserModel user = await _userRepository.GetUserById(id);
@@ -30,7 +30,7 @@ namespace TaskApi.Controllers
             return Ok(user);
         }
 
-        [HttpPost]
+        [HttpPost("newUser")]
         public async Task<ActionResult<UserModel>> CreateUser([FromBody] UserModel user)
         {
             UserModel newUser = await _userRepository.CreateUser(user);
@@ -38,7 +38,7 @@ namespace TaskApi.Controllers
             return Ok(newUser);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("user/{id}")]
         public async Task<ActionResult<UserModel>> UpdateUser([FromBody] UserModel user, Guid id)
         {
             user.Id = id;
@@ -47,7 +47,7 @@ namespace TaskApi.Controllers
             return Ok(changedUser);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("user/{id}")]
         public async Task<ActionResult<UserModel>> DeleteUser(Guid id)
         {
             Boolean deleted = await _userRepository.DeleteUser(id);
