@@ -1,7 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.Internal;
 using TaskApi.Models;
 using TaskApi.Repositories.Interfaces;
+using System.Security.Claims;
 using TaskApi.Services;
 
 namespace TaskApi.Controllers
@@ -18,13 +19,20 @@ namespace TaskApi.Controllers
         }
 
         [HttpGet("users")]
+        [Authorize]
+        [Authorize(Roles = "Senior Engineer")]
         public async Task<ActionResult<List<UserModel>>> GetUsers()
         {
             List<UserModel> users = await _userRepository.GetUsers();
             return Ok(users);
         }
 
+        [HttpGet("test")]
+        [Authorize]
+        public string Authenticated() => $"Autenticado - {ClaimTypes.NameIdentifier}";
+
         [HttpGet("user/{id}")]
+        [Authorize]
         public async Task<ActionResult<UserModel>> GetUser(Guid id)
         {
             UserModel user = await _userRepository.GetUserById(id);
@@ -43,6 +51,7 @@ namespace TaskApi.Controllers
         }
 
         [HttpPost("auth")]
+        [Authorize]
         public async Task<ActionResult<dynamic>> Login([FromBody] LoginModel userLogin)
         {
             var user = await _userRepository.GetUserByEmail(userLogin.Email);
@@ -61,11 +70,12 @@ namespace TaskApi.Controllers
 
             var token = TokenJWT.GenerateToken(user);
 
-            return Ok(token);
+            return new { token = token };
         }
 
 
         [HttpPut("user/{id}")]
+        [Authorize]
         public async Task<ActionResult<UserModel>> UpdateUser([FromBody] UserModel user, Guid id)
         {
             user.Id = id;
@@ -75,6 +85,7 @@ namespace TaskApi.Controllers
         }
 
         [HttpDelete("user/{id}")]
+        [Authorize]
         public async Task<ActionResult<UserModel>> DeleteUser(Guid id)
         {
             Boolean deleted = await _userRepository.DeleteUser(id);

@@ -1,5 +1,3 @@
-using BCrypt.Net;
-
 namespace TaskApi.Services
 {
     public class PasswordHash

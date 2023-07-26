@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskApi.Models;
 using TaskApi.Repositories.Interfaces;
@@ -19,6 +16,7 @@ namespace TaskApi.Controllers
         }
 
         [HttpGet("tasks")]
+        [Authorize]
         public async Task<ActionResult<List<TaskModel>>> GetTasks()
         {
             List<TaskModel> tasks = await _taskRepository.GetTasks();
@@ -26,6 +24,7 @@ namespace TaskApi.Controllers
         }
 
         [HttpGet("task/{id}")]
+        [Authorize]
         public async Task<ActionResult<TaskModel>> GetTask(int id)
         {
             TaskModel task = await _taskRepository.GetTaskById(id);
@@ -33,6 +32,7 @@ namespace TaskApi.Controllers
         }
 
         [HttpPost("newTask")]
+        [Authorize]
         public async Task<ActionResult<TaskModel>> CreateTask([FromBody] TaskModel task)
         {
             TaskModel newTask = await _taskRepository.CreateTask(task);
@@ -40,6 +40,7 @@ namespace TaskApi.Controllers
         }
 
         [HttpPut("task/{id}")]
+        [Authorize]
         public async Task<ActionResult<TaskModel>> UpdateTask([FromBody] TaskModel task, int id)
         {
             task.Id = id;
@@ -48,6 +49,7 @@ namespace TaskApi.Controllers
         }
 
         [HttpDelete("task/{id}")]
+        [Authorize]
         public async Task<ActionResult<Boolean>> DeleteTask(int id)
         {
             Boolean deletedTask = await _taskRepository.DeleteTask(id);
