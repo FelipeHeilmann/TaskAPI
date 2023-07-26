@@ -11,6 +11,7 @@ namespace TaskApi.Data.Map
             builder.Property(user => user.Id).ValueGeneratedOnAdd().HasColumnName("id");
             builder.Property(user => user.Name).IsRequired().HasColumnName("name");
             builder.Property(user => user.Email).IsRequired().HasColumnName("email");
+            builder.Property(user => user.Password).IsRequired().HasColumnName("password");
             builder.ToTable("users");
         }
 

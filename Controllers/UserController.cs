@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TaskApi.Models;
 using TaskApi.Repositories.Interfaces;
+using TaskApi.Services;
 
 namespace TaskApi.Controllers
 {
@@ -33,6 +34,8 @@ namespace TaskApi.Controllers
         [HttpPost("newUser")]
         public async Task<ActionResult<UserModel>> CreateUser([FromBody] UserModel user)
         {
+            user.Password = PasswordHash.PasswordHashed(user.Password);
+
             UserModel newUser = await _userRepository.CreateUser(user);
 
             return Ok(newUser);
