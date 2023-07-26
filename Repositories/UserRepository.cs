@@ -20,6 +20,11 @@ namespace TaskApi.Repositories
         {
             return await _dbContext.Users.FirstOrDefaultAsync(user => user.Id == userId);
         }
+
+        public async Task<UserModel> GetUserByEmail(string email)
+        {
+            return await _dbContext.Users.FirstOrDefaultAsync(user => user.Email == email);
+        }
         public async Task<UserModel> CreateUser(UserModel user)
         {
             await _dbContext.Users.AddAsync(user);
@@ -32,6 +37,7 @@ namespace TaskApi.Repositories
 
             userAlreadyExists.Name = user.Name;
             userAlreadyExists.Email = user.Email;
+            userAlreadyExists.Role = user.Role;
 
             _dbContext.Update(userAlreadyExists);
             await _dbContext.SaveChangesAsync();
@@ -47,5 +53,6 @@ namespace TaskApi.Repositories
             await _dbContext.SaveChangesAsync();
             return true;
         }
+
     }
 }

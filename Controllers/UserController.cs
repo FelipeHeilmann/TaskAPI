@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.Internal;
 using TaskApi.Models;
 using TaskApi.Repositories.Interfaces;
 using TaskApi.Services;
@@ -40,6 +41,29 @@ namespace TaskApi.Controllers
 
             return Ok(newUser);
         }
+
+        [HttpPost("auth")]
+        public async Task<ActionResult<dynamic>> Login([FromBody] LoginModel userLogin)
+        {
+            var user = await _userRepository.GetUserByEmail(userLogin.Email);
+
+            if (user == null)
+            {
+                return BadRequest(new { message = "Usuário não encontado" });
+            }
+
+            bool isPasswordValid = PasswordHash.VerifyPassword(userLogin.Password, user.Password);
+
+            if (!isPasswordValid)
+            {
+                return BadRequest("Usuário ou senha inválido");
+            }
+
+            var token = TokenJWT.GenerateToken(user);
+
+            return Ok(token);
+        }
+
 
         [HttpPut("user/{id}")]
         public async Task<ActionResult<UserModel>> UpdateUser([FromBody] UserModel user, Guid id)
