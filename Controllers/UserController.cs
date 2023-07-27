@@ -27,10 +27,6 @@ namespace TaskApi.Controllers
             return Ok(users);
         }
 
-        [HttpGet("test")]
-        [Authorize]
-        public string Authenticated() => $"Autenticado - {ClaimTypes.NameIdentifier}";
-
         [HttpGet("user/{id}")]
         [Authorize]
         public async Task<ActionResult<UserModel>> GetUser(Guid id)
@@ -51,7 +47,6 @@ namespace TaskApi.Controllers
         }
 
         [HttpPost("auth")]
-        [Authorize]
         public async Task<ActionResult<dynamic>> Login([FromBody] LoginModel userLogin)
         {
             var user = await _userRepository.GetUserByEmail(userLogin.Email);
@@ -70,7 +65,7 @@ namespace TaskApi.Controllers
 
             var token = TokenJWT.GenerateToken(user);
 
-            return new { token = token };
+            return new { token };
         }
 
 

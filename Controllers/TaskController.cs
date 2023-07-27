@@ -35,6 +35,13 @@ namespace TaskApi.Controllers
         [Authorize]
         public async Task<ActionResult<TaskModel>> CreateTask([FromBody] TaskModel task)
         {
+            if (!Guid.TryParse(User.Claims.FirstOrDefault(x => x.Type.Equals("id", StringComparison.InvariantCultureIgnoreCase))?.Value, out var userIdGuid))
+            {
+                return BadRequest("Id do usuário inválido no token.");
+            }
+
+            task.UserId = userIdGuid;
+
             TaskModel newTask = await _taskRepository.CreateTask(task);
             return Ok(newTask);
         }
