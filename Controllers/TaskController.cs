@@ -48,11 +48,11 @@ namespace TaskApi.Controllers
 
         [HttpPut("tasks/{id}")]
         [Authorize]
-        public async Task<ActionResult<TaskModel>> UpdateTask([FromBody] TaskModel task, int id)
+        public async Task<ActionResult> UpdateTask([FromBody] TaskModel task, int id)
         {
             task.Id = id;
-            TaskModel changedTask = await _taskRepository.UpdateTask(task, id);
-            return Ok(changedTask);
+            await _taskRepository.UpdateTask(task, id);
+            return NoContent();
         }
 
         [HttpDelete("tasks/{id}")]
