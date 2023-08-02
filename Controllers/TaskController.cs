@@ -23,15 +23,15 @@ namespace TaskApi.Controllers
             return Ok(tasks);
         }
 
-        [HttpGet("task/{id}")]
+        [HttpGet("tasks/{id}")]
         [Authorize]
-        public async Task<ActionResult<TaskModel>> GetTask(int id)
+        public async Task<ActionResult<TaskModel>> GetTaskById(int id)
         {
             TaskModel task = await _taskRepository.GetTaskById(id);
             return Ok(task);
         }
 
-        [HttpPost("newTask")]
+        [HttpPost("tasks")]
         [Authorize]
         public async Task<ActionResult<TaskModel>> CreateTask([FromBody] TaskModel task)
         {
@@ -43,10 +43,10 @@ namespace TaskApi.Controllers
             task.UserId = userIdGuid;
 
             TaskModel newTask = await _taskRepository.CreateTask(task);
-            return Ok(newTask);
+            return CreatedAtAction(nameof(GetTaskById), new { id = newTask.Id });
         }
 
-        [HttpPut("task/{id}")]
+        [HttpPut("tasks/{id}")]
         [Authorize]
         public async Task<ActionResult<TaskModel>> UpdateTask([FromBody] TaskModel task, int id)
         {
@@ -55,7 +55,7 @@ namespace TaskApi.Controllers
             return Ok(changedTask);
         }
 
-        [HttpDelete("task/{id}")]
+        [HttpDelete("tasks/{id}")]
         [Authorize]
         public async Task<ActionResult<Boolean>> DeleteTask(int id)
         {
